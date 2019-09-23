@@ -95,4 +95,24 @@ class Order extends NodeAbstract
     {
         return $this->post('/api/v1/orders/buyer_cancellation/reject', $parameters);
     }
+    
+    public function GetForderInfo($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/orders/forder/get', $parameters);
+    }
+
+    public function GetEscrowReleasedOrders($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/orders/get_escrow_detail', $parameters);
+    }
+
+    public function SplitOrder($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/orders/split', $parameters);
+    }
+
+    public function UndoSplitOrder($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/orders/unsplit', $parameters);
+    }
 }
