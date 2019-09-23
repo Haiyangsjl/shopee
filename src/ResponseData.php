@@ -9,10 +9,10 @@ use function json_decode;
 class ResponseData
 {
     /** @var ResponseInterface */
-    private $response;
+    public $response;
 
     /** @var array */
-    private $data;
+    public $data;
 
     public function __construct(ResponseInterface $response)
     {
