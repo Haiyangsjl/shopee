@@ -2,12 +2,6 @@
   "name": "arms/shopee-php",
   "description": "Shopee Partner API PHP SDK",
   "type": "library",
-   "repositories": [  
-      {  
-          "type": "vcs",  
-          "url": "https://github.com/rayleen-arms/shopee-php"  
-      }  
-  ],
   "keywords": [
     "shopee",
     "openapi"
