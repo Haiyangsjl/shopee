@@ -139,4 +139,13 @@ class Logistics extends NodeAbstract
     {
         return $this->post('/api/v1/logistics/tracking_number/set_mass', $parameters);
     }
+    public function GetLogisticInfo($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/logistics/init_info/get', $parameters);
+    }
+
+    public function updateShopLogistics($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/logistics/channels/update', $parameters);
+    }
 }
