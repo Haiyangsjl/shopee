@@ -1,7 +1,13 @@
 {
-  "name": "minchao/shopee-php",
+  "name": "arms/shopee-php",
   "description": "Shopee Partner API PHP SDK",
   "type": "library",
+   "repositories": [  
+      {  
+          "type": "vcs",  
+          "url": "https://github.com/rayleen-arms/shopee-php"  
+      }  
+  ],
   "keywords": [
     "shopee",
     "openapi"
@@ -14,8 +20,7 @@
   "require": {
     "php": ">=7.1",
     "ext-json": "*",
-    "guzzlehttp/guzzle": "^6.3",
-    "arms/shopee-php": "dev-master"
+    "guzzlehttp/guzzle": "^6.3"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.0",
