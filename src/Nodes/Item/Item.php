@@ -138,6 +138,11 @@ class Item extends NodeAbstract
     {
         return $this->post('/api/v1/item/update', $parameters);
     }
+    
+    public function updateItemImg($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/item/img/update', $parameters);
+    }
 
     /**
      * Use this call to update item price.
