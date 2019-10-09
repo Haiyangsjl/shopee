@@ -219,11 +219,6 @@ class Item extends NodeAbstract
         return $this->post('/api/v1/items/tier_var/update_list', $parameters);
     }
     
-    public function updateTierVariationList($parameters = []): ResponseData
-    {
-        return $this->post('/api/v1/items/tier_var/update_list', $parameters);
-    }
-    
     public function updateTierVariationIndex($parameters = []): ResponseData
     {
         return $this->post('/api/v1/items/tier_var/update', $parameters);
