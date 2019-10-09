@@ -201,26 +201,26 @@ class Item extends NodeAbstract
     
     public function initTierVariation($parameters = []): ResponseData
     {
-        return $this->post('/api/v1/items/tier_var/init', $parameters);
+        return $this->post('/api/v1/item/tier_var/init', $parameters);
     }
     
     public function addTierVariation($parameters = []): ResponseData
     {
-        return $this->post('/api/v1/items/tier_var/add', $parameters);
+        return $this->post('/api/v1/item/tier_var/add', $parameters);
     }
     
     public function getVariations($parameters = []): ResponseData
     {
-        return $this->post('/api/v1/items/tier_var/get', $parameters);
+        return $this->post('/api/v1/item/tier_var/get', $parameters);
     }
     
     public function updateTierVariationList($parameters = []): ResponseData
     {
-        return $this->post('/api/v1/items/tier_var/update_list', $parameters);
+        return $this->post('/api/v1/item/tier_var/update_list', $parameters);
     }
     
     public function updateTierVariationIndex($parameters = []): ResponseData
     {
-        return $this->post('/api/v1/items/tier_var/update', $parameters);
+        return $this->post('/api/v1/item/tier_var/update', $parameters);
     }
 }
