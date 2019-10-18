@@ -223,4 +223,24 @@ class Item extends NodeAbstract
     {
         return $this->post('/api/v1/item/tier_var/update', $parameters);
     }
+    
+    public function updateVariationPriceBatch($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/items/update/vars_price', $parameters);
+    }
+    
+    public function updateVariationStockBatch($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/items/update/vars_stock', $parameters);
+    }
+    
+    public function updatePriceBatch($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/items/update/items_price', $parameters);
+    }
+    
+    public function updateStockBatch($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/items/update/items_stock', $parameters);
+    }
 }
