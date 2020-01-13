@@ -40,4 +40,15 @@ class Returns extends NodeAbstract
     {
         return $this->post('/api/v1/returns/get', $parameters);
     }
+
+    /**
+     * Get return details.
+     *
+     * @param array|RequestParametersInterface $parameters
+     * @return ResponseData
+     */
+    public function GetReturnDetail($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/returns/detail', $parameters);
+    }
 }
