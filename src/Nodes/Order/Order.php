@@ -115,4 +115,9 @@ class Order extends NodeAbstract
     {
         return $this->post('/api/v1/orders/unsplit', $parameters);
     }
+    
+    public function MyIncome($parameters = []): ResponseData
+    {
+        return $this->post('/api/v1/orders/income', $parameters);
+    }
 }
