@@ -13,7 +13,7 @@ class GetAttributes extends RequestParameters
 
     /**
      * Set the Identify of category.
-     * Should call shopee.item.GetCategories to get category first.Related to result.categories.category_id.
+     * Should call Shopee.item.GetCategories to get category first.Related to result.categories.category_id.
      * Must be third level category
      *
      * @param int $categoryId

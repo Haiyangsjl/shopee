@@ -88,7 +88,7 @@ class UpdateItem extends RequestParameters
     }
 
     /**
-     * Should call shopee.item.GetAttributes to get attribute first. Should contain all all mandatory attribute.
+     * Should call Shopee.item.GetAttributes to get attribute first. Should contain all all mandatory attribute.
      *
      * @param Attributes $attributes
      * @return $this
@@ -142,7 +142,7 @@ class UpdateItem extends RequestParameters
     }
 
     /**
-     * Should call shopee.logistics.GetLogistics to get logistics first. Should contain all all logistics.
+     * Should call Shopee.logistics.GetLogistics to get logistics first. Should contain all all logistics.
      *
      * @param Logistics $logistics
      * @return $this

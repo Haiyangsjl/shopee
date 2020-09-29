@@ -1,15 +1,15 @@
 {
-  "name": "arms/shopee-php",
+  "name": "Haiyangsjl/shopee",
   "description": "Shopee Partner API PHP SDK",
   "type": "library",
   "keywords": [
     "shopee",
     "openapi"
   ],
-  "homepage": "https://github.com/minchao/shopee-php",
+  "homepage": "https://github.com/Haiyangsjl/shopee",
   "license": "BSD-3-Clause",
   "support": {
-    "issues": "https://github.com/minchao/shopee-php/issues"
+    "issues": "https://github.com/Haiyangsjl/shopee/issues"
   },
   "require": {
     "php": ">=7.1",
@@ -23,7 +23,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Shopee\\": "src"
+      "Haiyangsjl\\Shopee\\": "src"
     }
   },
   "autoload-dev": {

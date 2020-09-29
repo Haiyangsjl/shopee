@@ -12,7 +12,7 @@ class Logistic extends RequestParameters
     }
 
     /**
-     * Related to shopee.logistics.GetLogistics result.logistics.logistic_id
+     * Related to Shopee.logistics.GetLogistics result.logistics.logistic_id
      *
      * @param $logisticId
      * @return $this
@@ -30,7 +30,7 @@ class Logistic extends RequestParameters
     }
 
     /**
-     * Related to shopee.logistics.GetLogistics result.logistics.enabled only affect current item
+     * Related to Shopee.logistics.GetLogistics result.logistics.enabled only affect current item
      *
      * @param bool $enabled
      * @return $this
