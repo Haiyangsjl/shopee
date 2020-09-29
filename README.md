@@ -1,4 +1,4 @@
-# shope
+# shopee
 
 [![Build Status](https://travis-ci.org/minchao/shopee-php.svg?branch=master)](https://travis-ci.org/minchao/shopee-php)
 [![Latest Stable Version](https://poser.pugx.org/minchao/shopee-php/v/stable)](https://packagist.org/packages/minchao/shopee-php)
