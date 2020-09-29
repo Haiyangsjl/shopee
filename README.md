@@ -18,7 +18,7 @@ This is a [Shopee Partner API](https://partner.shopeemobile.com/docs/) Client fo
 Execute the following command to get the package:
 
 ```
-$ composer require minchao/shopee-php
+$ composer require haiyangsjl/shopee-php
 ```
 
 ## Usage
