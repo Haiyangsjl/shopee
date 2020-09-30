@@ -35,14 +35,16 @@ use function time;
  * @property Nodes\Returns\Returns returns
  * @property Nodes\Shop\Shop shop
  * @property Nodes\Discount\Discount discount
+ * @property Nodes\Authorization\Authorization authorization
  */
 class Client
 {
     public const VERSION = '0.0.';
 
-    public const DEFAULT_BASE_URL = 'https://partner.shopeemobile.com';
+    // public const DEFAULT_BASE_URL = 'https://partner.shopeemobile.com';
+    public const DEFAULT_BASE_URL = 'https://partner.uat.shopeemobile.com';
 
-    public const DEFAULT_USER_AGENT = 'Shopee-php/' . self::VERSION;
+    public const DEFAULT_USER_AGENT = 'Shopee-php/'.self::VERSION;
 
     public const ENV_SECRET_NAME = 'SHOPEE_API_SECRET';
 
@@ -78,16 +80,15 @@ class Client
             'baseUrl' => self::DEFAULT_BASE_URL,
             'userAgent' => self::DEFAULT_USER_AGENT,
             'secret' => getenv(self::ENV_SECRET_NAME),
-            'partner_id' => (int)getenv(self::ENV_PARTNER_ID_NAME),
-            'shopid' => (int)getenv(self::ENV_SHOP_ID_NAME),
+            'partner_id' => (int) getenv(self::ENV_PARTNER_ID_NAME),
+            'shopid' => (int) getenv(self::ENV_SHOP_ID_NAME),
         ], $config);
-
         $this->httpClient = $config['httpClient'] ?: new HttpClient();
         $this->setBaseUrl($config['baseUrl']);
         $this->setUserAgent($config['userAgent']);
         $this->secret = $config['secret'];
-        $this->partnerId = $config['partner_id'];
-        $this->shopId = $config['shopid'];
+        $this->partnerId = (int)$config['partner_id'];
+        $this->shopId = (int)$config['shopid'];
 
         $this->nodes['item'] = new Nodes\Item\Item($this);
         $this->nodes['logistics'] = new Nodes\Logistics\Logistics($this);
@@ -95,6 +96,7 @@ class Client
         $this->nodes['returns'] = new Nodes\Returns\Returns($this);
         $this->nodes['shop'] = new Nodes\Shop\Shop($this);
         $this->nodes['discount'] = new Nodes\Discount\Discount($this);
+        $this->nodes['authorization'] = new Nodes\Authorization\Authorization($this);
     }
 
     public function __get(string $name)
@@ -112,7 +114,7 @@ class Client
     }
 
     /**
-     * @param ClientInterface $client
+     * @param  ClientInterface  $client
      * @return $this
      */
     public function setHttpClient(ClientInterface $client)
@@ -128,7 +130,7 @@ class Client
     }
 
     /**
-     * @param string $userAgent
+     * @param  string  $userAgent
      * @return $this
      */
     public function setUserAgent(string $userAgent)
@@ -144,7 +146,7 @@ class Client
     }
 
     /**
-     * @param string $url
+     * @param  string  $url
      * @return $this
      */
     public function setBaseUrl(string $url)
@@ -162,6 +164,64 @@ class Client
             'timestamp' => time(), // Put the current UNIX timestamp when making a request
         ];
     }
+
+    public function generateAuthorizationUrl($path, $redirect): string
+    {
+        $uri = $this->formatUri($path);
+        $data = [
+            'partner_id' => $this->partnerId,
+            'path' => $path,
+            'timestamp' => time(),
+        ];
+        $res = implode('', $data);
+        $data['sign'] = hash_hmac('sha256', $res, $this->secret);
+        $data['redirect'] = $redirect;
+        return $uri.'?'.http_build_query($data);
+    }
+
+    public function getAccessToken($path, $code)
+    {
+        $uri = $this->formatUri($path);
+        $data = [
+            'partner_id' => $this->partnerId,
+            'path' => $path,
+            'timestamp' => time(),
+            'shop_id' => $this->shopId,
+        ];
+        $res = implode('', $data);
+        $data['sign'] = hash_hmac('sha256', $res, $this->secret);
+        unset($data['path']);
+
+        $url = $uri.'?'.http_build_query($data);
+        $body = [
+            'code' => $code,
+            'shop_id' =>  $this->shopId,
+            'partner_id' => $this->partnerId,
+        ];
+        return $this->authRequest($url, $body);
+    }
+
+    public function refreshToken($path, $refresh_token)
+    {
+        $uri = $this->formatUri($path);
+        $data = [
+            'partner_id' => $this->partnerId,
+            'path' => $path,
+            'timestamp' => time(),
+        ];
+        $res = implode('', $data);
+        $data['sign'] = hash_hmac('sha256', $res, $this->secret);
+        unset($data['path']);
+
+        $url = $uri.'?'.http_build_query($data);
+        $body = [
+            'partner_id' => $this->partnerId,
+            'shop_id' =>  $this->shopId,
+            'refresh_token' => $refresh_token,
+        ];
+        return $this->authRequest($url, $body);
+    }
+
 
     /**
      * Create HTTP JSON body
@@ -189,7 +249,6 @@ class Client
     {
         $url = Uri::composeComponents($uri->getScheme(), $uri->getAuthority(), $uri->getPath(), '', '');
         $data = $url . '|' . $body;
-
         return hash_hmac('sha256', $data, $this->secret);
     }
 
@@ -201,6 +260,21 @@ class Client
      */
     public function newRequest($uri, array $headers = [], $data = []): RequestInterface
     {
+        $uri = $this->formatUri($uri);
+        $jsonBody = $this->createJsonBody($data);
+
+        $headers['Authorization'] = $this->signature($uri, $jsonBody);
+        $headers['User-Agent'] = $this->userAgent;
+        $headers['Content-Type'] = 'application/json';
+        return new Request(
+            'POST', // All APIs should use POST method
+            $uri,
+            $headers,
+            $jsonBody
+        );
+    }
+
+    public function formatUri($uri) {
         $uri = uri_for($uri);
         $path = $this->baseUrl->getPath() . $uri->getPath();
 
@@ -210,19 +284,7 @@ class Client
             ->withHost($this->baseUrl->getHost())
             ->withPort($this->baseUrl->getPort())
             ->withPath($path);
-
-        $jsonBody = $this->createJsonBody($data);
-
-        $headers['Authorization'] = $this->signature($uri, $jsonBody);
-        $headers['User-Agent'] = $this->userAgent;
-        $headers['Content-Type'] = 'application/json';
-
-        return new Request(
-            'POST', // All APIs should use POST method
-            $uri,
-            $headers,
-            $jsonBody
-        );
+        return $uri;
     }
 
     public function send(RequestInterface $request): ResponseInterface
@@ -247,5 +309,25 @@ class Client
         }
 
         return $response;
+    }
+
+    /**
+     * @param  string  $url
+     * @param  array  $body
+     * @return ResponseData
+     */
+    public function authRequest(string $url, array $body): ResponseData
+    {
+        $body = json_encode($body);
+        $headers['User-Agent'] = $this->userAgent;
+        $headers['Content-Type'] = 'application/json';
+        $request = new Request(
+            'POST',
+            $url,
+            $headers,
+            $body
+        );
+        $response = $this->send($request);
+        return new ResponseData($response);
     }
 }
