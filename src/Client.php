@@ -41,8 +41,7 @@ class Client
 {
     public const VERSION = '0.0.';
 
-    // public const DEFAULT_BASE_URL = 'https://partner.shopeemobile.com';
-    public const DEFAULT_BASE_URL = 'https://partner.uat.shopeemobile.com';
+    public const DEFAULT_BASE_URL = 'https://partner.shopeemobile.com';
 
     public const DEFAULT_USER_AGENT = 'Shopee-php/'.self::VERSION;
 
